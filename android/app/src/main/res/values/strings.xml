@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Drury Outdoors</string>
+    <string name="title_activity_main">Drury Outdoors</string>
+    <string name="package_name">com.druryoutdoors.provoriver</string>
+    <string name="custom_url_scheme">com.druryoutdoors.provoriver</string>
+</resources>

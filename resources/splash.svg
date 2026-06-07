@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2732" height="2732" viewBox="0 0 2732 2732">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b3125"/>
+      <stop offset="100%" stop-color="#1f1812"/>
+    </linearGradient>
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="2732" height="2732" fill="url(#bg)"/>
+  <g opacity="0.35">
+    <path d="M0 420 C520 260, 840 620, 1250 460 C1650 300, 2200 700, 2732 490 L2732 860 C2250 1060, 1670 690, 1250 860 C850 1020, 520 860, 0 1040 Z" fill="#89775f"/>
+    <path d="M0 1520 C430 1390, 850 1730, 1270 1570 C1710 1390, 2220 1820, 2732 1620 L2732 2030 C2200 2210, 1760 1900, 1300 2110 C840 2320, 430 2050, 0 2240 Z" fill="#a08f71"/>
+  </g>
+  <rect x="0" y="0" width="2732" height="2732" fill="url(#shadow)"/>
+  <rect x="520" y="1080" width="1692" height="574" rx="64" fill="#942923" stroke="#f4ca67" stroke-width="24"/>
+  <rect x="548" y="1108" width="1636" height="518" rx="52" fill="none" stroke="#f4ca67" stroke-width="8" stroke-dasharray="8 16" opacity="0.72"/>
+  <text x="1366" y="1322" text-anchor="middle" font-family="Bebas Neue, Impact, sans-serif" font-size="372" letter-spacing="7" fill="#f4ca67" stroke="#5a1510" stroke-width="22" paint-order="stroke fill">DRURY</text>
+  <text x="1366" y="1548" text-anchor="middle" font-family="Bebas Neue, Impact, sans-serif" font-size="232" letter-spacing="5" fill="#f4ca67" stroke="#5a1510" stroke-width="14" paint-order="stroke fill">OUTDOORS</text>
+</svg>

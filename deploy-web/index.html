@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#183a2d" />
+  <title>Drury Outdoors - Provo River Fly Fishing</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1 class="logo-badge" aria-label="Drury Outdoors">
+      <span class="logo-line">DRURY</span>
+      <span class="logo-line">OUTDOORS</span>
+    </h1>
+    <p class="subtitle">Best flies by Upper, Middle, and Lower Provo, tuned by season and time of day, with live weather updates.</p>
+  </header>
+
+  <nav class="tab-nav" aria-label="Main Views">
+    <button id="plannerTab" class="tab-btn is-active" type="button" data-view="planner">Planner</button>
+    <button id="flyIndexTab" class="tab-btn" type="button" data-view="fly-index">Fly Index</button>
+  </nav>
+
+  <main id="plannerView" class="layout">
+    <section class="panel controls-panel">
+      <h2>Conditions Planner</h2>
+      <div class="control-grid">
+        <label>River Section
+          <select id="sectionSelect">
+            <option value="upper">Upper Provo</option>
+            <option value="middle">Middle Provo</option>
+            <option value="lower">Lower Provo</option>
+          </select>
+        </label>
+        <label>Season
+          <select id="seasonSelect">
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="fall">Fall</option>
+            <option value="winter">Winter</option>
+          </select>
+        </label>
+        <label>Time of Day
+          <select id="timeSelect">
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel recommendations-panel">
+      <div class="section-heading">
+        <h2>Best Flies</h2>
+        <p id="recommendationMeta"></p>
+      </div>
+      <div id="flyList" class="fly-list"></div>
+    </section>
+
+    <section class="panel weather-panel">
+      <div class="section-heading weather-title-row">
+        <h2>Live River Weather</h2>
+        <button id="refreshWeatherButton" type="button">Refresh</button>
+      </div>
+      <p id="weatherStatus" class="weather-status">Loading weather...</p>
+      <div id="weatherCards" class="weather-cards"></div>
+    </section>
+  </main>
+
+  <section id="flyIndexView" class="layout view-hidden" aria-labelledby="fly-index-title">
+    <section class="panel index-panel">
+      <div class="section-heading">
+        <h2 id="fly-index-title">Fly Index</h2>
+        <p id="flyIndexMeta"></p>
+      </div>
+      <div id="flyIndexList" class="fly-list"></div>
+    </section>
+  </section>
+
+  <footer class="site-footer">
+    <p>Use this as a starting point and match local hatch and water clarity.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

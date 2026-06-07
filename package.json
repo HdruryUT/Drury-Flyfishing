@@ -1,0 +1,25 @@
+{
+  "name": "drury-outdoors-provo-river-fly-fishing",
+  "version": "1.0.0",
+  "description": "Mobile-first website for Provo River fly recommendations by section, season, and time of day.",
+  "main": "script.js",
+  "scripts": {
+    "copy:web": "rm -rf www && mkdir -p www && cp -R index.html styles.css script.js manifest.webmanifest sw.js assets www/",
+    "cap:sync": "npm run copy:web && npx cap sync",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@capacitor/ios": "^8.4.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
+  }
+}

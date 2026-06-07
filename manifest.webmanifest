@@ -1,0 +1,10 @@
+{
+  "name": "Drury Outdoors - Provo River Fly Fishing",
+  "short_name": "Drury Outdoors",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eef5e8",
+  "theme_color": "#183a2d",
+  "description": "Drury Outdoors guide with season and time-of-day fly recommendations for Upper, Middle, and Lower Provo River plus live weather updates.",
+  "icons": []
+}
