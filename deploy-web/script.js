@@ -166,10 +166,82 @@ const weatherStatus = document.getElementById("weatherStatus");
 const refreshWeatherButton = document.getElementById("refreshWeatherButton");
 const plannerTab = document.getElementById("plannerTab");
 const flyIndexTab = document.getElementById("flyIndexTab");
+const riverMapTab = document.getElementById("riverMapTab");
 const plannerView = document.getElementById("plannerView");
 const flyIndexView = document.getElementById("flyIndexView");
+const riverMapView = document.getElementById("riverMapView");
 const flyIndexList = document.getElementById("flyIndexList");
 const flyIndexMeta = document.getElementById("flyIndexMeta");
+const riverDetailCards = document.getElementById("riverDetailCards");
+
+const riverSectionDetails = {
+  upper: {
+    title: "Upper Provo",
+    summary: "High-elevation canyon water with colder flows, pocket water, and technical drifts.",
+    access: "Mirror Lake Highway corridor and pull-offs through upper canyon sections.",
+    focus: "Best for nymph rigs, smaller baetis patterns, and precise drifts in broken current."
+  },
+  middle: {
+    title: "Middle Provo",
+    summary: "Classic tailwater influence with consistent flows, riffle-run structure, and strong hatch activity.",
+    access: "Popular access around Heber Valley reaches and public walk-in stretches.",
+    focus: "Excellent for dry-dropper in summer and hatch-matching dries during PMD and caddis windows."
+  },
+  lower: {
+    title: "Lower Provo",
+    summary: "Broader river profile with mixed speed seams, deeper slots, and year-round opportunity.",
+    access: "Convenient pull-offs and trails around Provo Canyon stretches below Deer Creek.",
+    focus: "Strong midge and baetis game in colder months, streamers and terrestrials when flows allow."
+  }
+};
+
+let riverMapRendered = false;
+
+function sectionMapUrl(latitude, longitude) {
+  return `https://www.google.com/maps?q=${latitude},${longitude}`;
+}
+
+function setActiveRiverSection(sectionKey) {
+  document.querySelectorAll(".river-marker").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.section === sectionKey);
+  });
+
+  document.querySelectorAll(".river-detail-card").forEach((card) => {
+    card.classList.toggle("is-active", card.dataset.section === sectionKey);
+  });
+}
+
+function renderRiverMap() {
+  if (!riverDetailCards || riverMapRendered) return;
+
+  const cards = Object.entries(riverSectionDetails).map(([key, section]) => {
+    const coords = riverCoords[key];
+    return `
+      <article class="river-detail-card" data-section="${key}">
+        <h3>${section.title}</h3>
+        <p>${section.summary}</p>
+        <p><strong>Access:</strong> ${section.access}</p>
+        <p><strong>Fishing focus:</strong> ${section.focus}</p>
+        <a href="${sectionMapUrl(coords.latitude, coords.longitude)}" target="_blank" rel="noopener noreferrer">Open ${section.title} on map</a>
+      </article>
+    `;
+  });
+
+  riverDetailCards.innerHTML = cards.join("");
+
+  document.querySelectorAll(".river-marker").forEach((button) => {
+    button.addEventListener("click", () => {
+      const sectionKey = button.dataset.section;
+      setActiveRiverSection(sectionKey);
+
+      const card = document.querySelector(`.river-detail-card[data-section="${sectionKey}"]`);
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+
+  riverMapRendered = true;
+  setActiveRiverSection("upper");
+}
 
 function titleCase(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -300,14 +372,19 @@ function renderFlyIndex() {
 
 function setView(viewName) {
   const showPlanner = viewName === "planner";
+  const showFlyIndex = viewName === "fly-index";
+  const showRiverMap = viewName === "river-map";
 
   plannerView.classList.toggle("view-hidden", !showPlanner);
-  flyIndexView.classList.toggle("view-hidden", showPlanner);
+  flyIndexView.classList.toggle("view-hidden", !showFlyIndex);
+  riverMapView.classList.toggle("view-hidden", !showRiverMap);
 
   plannerTab.classList.toggle("is-active", showPlanner);
-  flyIndexTab.classList.toggle("is-active", !showPlanner);
+  flyIndexTab.classList.toggle("is-active", showFlyIndex);
+  riverMapTab.classList.toggle("is-active", showRiverMap);
 
-  if (!showPlanner) renderFlyIndex();
+  if (showFlyIndex) renderFlyIndex();
+  if (showRiverMap) renderRiverMap();
 }
 
 function setTheme() {
@@ -392,6 +469,7 @@ timeSelect.addEventListener("change", renderFlies);
 refreshWeatherButton.addEventListener("click", loadWeather);
 plannerTab.addEventListener("click", () => setView("planner"));
 flyIndexTab.addEventListener("click", () => setView("fly-index"));
+riverMapTab.addEventListener("click", () => setView("river-map"));
 
 renderFlies();
 loadWeather();

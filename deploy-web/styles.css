@@ -251,6 +251,118 @@ select {
   grid-column: 1 / -1;
 }
 
+.river-map-panel {
+  grid-column: 1 / -1;
+}
+
+.river-map-meta {
+  margin: 0;
+  color: #7e3527;
+  font-weight: 700;
+}
+
+.river-map-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.river-map-canvas {
+  position: relative;
+  min-height: 340px;
+  border: 1px solid #d9c2a2;
+  border-radius: 16px;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(77, 129, 93, .25), transparent 35%),
+    radial-gradient(circle at 85% 80%, rgba(120, 152, 96, .2), transparent 35%),
+    linear-gradient(165deg, #f6ecd8 0%, #efe2c9 100%);
+  overflow: hidden;
+}
+
+.river-path {
+  position: absolute;
+  left: 50%;
+  top: -16px;
+  width: 120px;
+  height: calc(100% + 32px);
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #5d8ca6, #3d6f86 50%, #2f5d73);
+  border-radius: 52% 48% 46% 54% / 10% 18% 12% 16%;
+  filter: drop-shadow(0 6px 10px rgba(25, 60, 81, .25));
+}
+
+.river-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #355468;
+  border-radius: 999px;
+  background: #fffaf2;
+  color: #234151;
+  padding: .4rem .75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.river-marker::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 8px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #24506a;
+}
+
+.marker-upper { top: 16%; }
+.marker-middle { top: 45%; }
+.marker-lower { top: 74%; }
+
+.river-marker.is-active {
+  background: linear-gradient(135deg, #8b251f, #a82f28);
+  border-color: #f0c96c;
+  color: #f3cf7a;
+}
+
+.river-detail-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .75rem;
+}
+
+.river-detail-card {
+  border: 1px solid #d9c2a2;
+  border-radius: 14px;
+  background: #fffaf2;
+  padding: .85rem;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.river-detail-card h3 {
+  margin: 0 0 .35rem;
+}
+
+.river-detail-card p {
+  margin: .25rem 0;
+  color: #4f3d2a;
+}
+
+.river-detail-card a {
+  display: inline-block;
+  margin-top: .35rem;
+  color: #7e3527;
+  font-weight: 700;
+}
+
+.river-detail-card.is-active {
+  border-color: #f0c96c;
+  box-shadow: 0 0 0 2px rgba(209, 160, 67, .22);
+}
+
 @keyframes lift-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -263,5 +375,10 @@ select {
 
 @media (min-width: 800px) {
   .layout { grid-template-columns: 1fr 1fr; }
-  .controls-panel, .weather-panel { grid-column: span 2; }
+  .controls-panel, .recommendations-panel, .weather-panel { grid-column: span 2; }
+
+  .river-map-grid {
+    grid-template-columns: 1fr 1.2fr;
+    align-items: start;
+  }
 }

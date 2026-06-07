@@ -23,6 +23,7 @@
   <nav class="tab-nav" aria-label="Main Views">
     <button id="plannerTab" class="tab-btn is-active" type="button" data-view="planner">Planner</button>
     <button id="flyIndexTab" class="tab-btn" type="button" data-view="fly-index">Fly Index</button>
+    <button id="riverMapTab" class="tab-btn" type="button" data-view="river-map">River Map</button>
   </nav>
 
   <main id="plannerView" class="layout">
@@ -79,6 +80,26 @@
         <p id="flyIndexMeta"></p>
       </div>
       <div id="flyIndexList" class="fly-list"></div>
+    </section>
+  </section>
+
+  <section id="riverMapView" class="layout view-hidden" aria-labelledby="river-map-title">
+    <section class="panel river-map-panel">
+      <div class="section-heading">
+        <h2 id="river-map-title">Provo River Map</h2>
+        <p class="river-map-meta">Upper, Middle, and Lower sections</p>
+      </div>
+
+      <div class="river-map-grid">
+        <div class="river-map-canvas" role="group" aria-label="Interactive Provo river section map">
+          <div class="river-path" aria-hidden="true"></div>
+          <button class="river-marker marker-upper" type="button" data-section="upper">Upper Provo</button>
+          <button class="river-marker marker-middle" type="button" data-section="middle">Middle Provo</button>
+          <button class="river-marker marker-lower" type="button" data-section="lower">Lower Provo</button>
+        </div>
+
+        <div id="riverDetailCards" class="river-detail-cards" aria-live="polite"></div>
+      </div>
     </section>
   </section>
 
