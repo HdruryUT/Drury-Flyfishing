@@ -173,6 +173,7 @@ const riverMapView = document.getElementById("riverMapView");
 const flyIndexList = document.getElementById("flyIndexList");
 const flyIndexMeta = document.getElementById("flyIndexMeta");
 const riverDetailCards = document.getElementById("riverDetailCards");
+const riverSectionMapFrame = document.getElementById("riverSectionMapFrame");
 
 const riverSectionDetails = {
   upper: {
@@ -201,6 +202,24 @@ function sectionMapUrl(latitude, longitude) {
   return `https://www.google.com/maps?q=${latitude},${longitude}`;
 }
 
+function osmEmbedUrl(latitude, longitude) {
+  const latPad = 0.03;
+  const lonPad = 0.05;
+  const minLat = latitude - latPad;
+  const maxLat = latitude + latPad;
+  const minLon = longitude - lonPad;
+  const maxLon = longitude + lonPad;
+
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${minLon},${minLat},${maxLon},${maxLat}&layer=mapnik&marker=${latitude},${longitude}`;
+}
+
+function updateEmbeddedRiverMap(sectionKey) {
+  if (!riverSectionMapFrame) return;
+  const coords = riverCoords[sectionKey];
+  if (!coords) return;
+  riverSectionMapFrame.src = osmEmbedUrl(coords.latitude, coords.longitude);
+}
+
 function setActiveRiverSection(sectionKey) {
   document.querySelectorAll(".river-marker").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.section === sectionKey);
@@ -209,6 +228,8 @@ function setActiveRiverSection(sectionKey) {
   document.querySelectorAll(".river-detail-card").forEach((card) => {
     card.classList.toggle("is-active", card.dataset.section === sectionKey);
   });
+
+  updateEmbeddedRiverMap(sectionKey);
 }
 
 function renderRiverMap() {

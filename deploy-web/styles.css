@@ -334,6 +334,20 @@ select {
   gap: .75rem;
 }
 
+.river-embed-wrap {
+  border: 1px solid #d9c2a2;
+  border-radius: 14px;
+  background: #fffaf2;
+  overflow: hidden;
+}
+
+.river-embed {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 0;
+}
+
 .river-detail-card {
   border: 1px solid #d9c2a2;
   border-radius: 14px;
@@ -380,5 +394,9 @@ select {
   .river-map-grid {
     grid-template-columns: 1fr 1.2fr;
     align-items: start;
+  }
+
+  .river-embed {
+    height: 360px;
   }
 }
