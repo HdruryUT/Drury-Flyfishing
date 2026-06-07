@@ -329,6 +329,7 @@ select {
   background: #fffaf2;
   padding: .85rem;
   transition: border-color .2s ease, box-shadow .2s ease;
+  display: none;
 }
 
 .river-detail-card h3 {
@@ -350,6 +351,7 @@ select {
 .river-detail-card.is-active {
   border-color: #f0c96c;
   box-shadow: 0 0 0 2px rgba(209, 160, 67, .22);
+  display: block;
 }
 
 @keyframes lift-in {
@@ -364,7 +366,10 @@ select {
 
 @media (min-width: 800px) {
   .layout { grid-template-columns: 1fr 1fr; }
-  .controls-panel, .recommendations-panel, .weather-panel { grid-column: span 2; }
+  .controls-panel, .recommendations-panel, .weather-panel {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 
   .river-map-grid {
     grid-template-columns: minmax(320px, .95fr) minmax(0, 1.05fr);
