@@ -91,24 +91,26 @@
       </div>
 
       <div class="river-map-grid">
-        <div class="river-map-canvas" role="group" aria-label="Interactive Provo river section map">
-          <div class="river-path" aria-hidden="true"></div>
-          <button class="river-marker marker-upper" type="button" data-section="upper">Upper Provo</button>
-          <button class="river-marker marker-middle" type="button" data-section="middle">Middle Provo</button>
-          <button class="river-marker marker-lower" type="button" data-section="lower">Lower Provo</button>
-        </div>
-
-        <div class="river-embed-wrap">
-          <iframe
-            id="riverSectionMapFrame"
-            class="river-embed"
-            title="Provo River section map"
+        <div class="river-map-figure-wrap">
+          <img
+            id="provoRiverMapImage"
+            class="river-map-image"
+            src="assets/theme/provo-river-map.png"
+            alt="Provo River map showing Upper, Middle, and Lower sections"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+          />
+          <p class="river-map-caption">Section reference map for the Provo River.</p>
         </div>
 
-        <div id="riverDetailCards" class="river-detail-cards" aria-live="polite"></div>
+        <div class="river-map-info">
+          <div class="river-section-pills" role="group" aria-label="Highlight river section details">
+            <button class="section-pill is-active" type="button" data-section="upper">Upper Provo</button>
+            <button class="section-pill" type="button" data-section="middle">Middle Provo</button>
+            <button class="section-pill" type="button" data-section="lower">Lower Provo</button>
+          </div>
+
+          <div id="riverDetailCards" class="river-detail-cards" aria-live="polite"></div>
+        </div>
       </div>
     </section>
   </section>
