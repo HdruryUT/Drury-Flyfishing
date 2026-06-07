@@ -375,7 +375,7 @@ select {
 
 @media (min-width: 800px) {
   .layout { grid-template-columns: 1fr 1fr; }
-  .controls-panel, .weather-panel { grid-column: span 2; }
+  .controls-panel, .recommendations-panel, .weather-panel { grid-column: span 2; }
 
   .river-map-grid {
     grid-template-columns: 1fr 1.2fr;
