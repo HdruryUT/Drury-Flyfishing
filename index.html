@@ -24,6 +24,9 @@
     <button id="plannerTab" class="tab-btn is-active" type="button" data-view="planner">Planner</button>
     <button id="flyIndexTab" class="tab-btn" type="button" data-view="fly-index">Fly Index</button>
     <button id="riverMapTab" class="tab-btn" type="button" data-view="river-map">River Map</button>
+    <button id="hatchCalendarTab" class="tab-btn" type="button" data-view="hatch-calendar">Hatch Calendar</button>
+    <button id="conditionsTab" class="tab-btn" type="button" data-view="conditions">Conditions</button>
+    <button id="regulationsTab" class="tab-btn" type="button" data-view="regulations">Regulations</button>
   </nav>
 
   <main id="plannerView" class="layout">
@@ -111,6 +114,94 @@
 
           <div id="riverDetailCards" class="river-detail-cards" aria-live="polite"></div>
         </div>
+      </div>
+    </section>
+  </section>
+
+  <section id="hatchCalendarView" class="layout view-hidden" aria-labelledby="hatch-calendar-title">
+    <section class="panel hatch-panel">
+      <div class="section-heading">
+        <h2 id="hatch-calendar-title">Hatch Calendar</h2>
+        <p class="hatch-panel-meta">Provo River seasonal insect activity</p>
+      </div>
+      <div id="hatchCalendarGrid"></div>
+      <div id="hatchDetails"></div>
+    </section>
+  </section>
+
+  <section id="conditionsView" class="layout view-hidden" aria-labelledby="conditions-title">
+    <section class="panel conditions-panel">
+      <div class="section-heading">
+        <h2 id="conditions-title">Live Conditions</h2>
+        <button id="refreshConditionsButton" type="button">Refresh</button>
+      </div>
+      <p id="conditionsStatus" class="conditions-status">Loading stream data...</p>
+      <div id="conditionsCards" class="conditions-cards"></div>
+      <p class="conditions-source">Stream data: USGS National Water Information System</p>
+    </section>
+  </section>
+
+  <section id="regulationsView" class="layout view-hidden" aria-labelledby="regulations-title">
+    <section class="panel regulations-panel">
+      <div class="section-heading">
+        <h2 id="regulations-title">Fishing Regulations</h2>
+        <p class="regulations-meta">Provo River — reference guide</p>
+      </div>
+      <div class="regulations-disclaimer">
+        <strong>Always verify current rules before fishing.</strong> Regulations change annually. Official source: <a href="https://wildlife.utah.gov/fishing/regulations.html" target="_blank" rel="noopener noreferrer">Utah DWR — wildlife.utah.gov</a>
+      </div>
+      <div class="regulations-grid">
+        <article class="reg-card">
+          <h3>License Requirements</h3>
+          <ul>
+            <li>All anglers age 12 and older must carry a valid Utah fishing license.</li>
+            <li>Combination and fishing-only licenses available at utahonline.utah.gov or most sporting goods retailers.</li>
+            <li>Non-resident licenses available online or in person at license agents statewide.</li>
+          </ul>
+        </article>
+        <article class="reg-card">
+          <h3>Middle Provo — Jordanelle to Deer Creek</h3>
+          <div class="reg-tag reg-tag-cr">Catch &amp; Release</div>
+          <div class="reg-tag reg-tag-ao">Artificial Only</div>
+          <ul>
+            <li>Trout: catch and release only — all sizes must be returned.</li>
+            <li>Artificial lures and flies only; bait fishing is prohibited.</li>
+            <li>Designated Blue Ribbon fishery — one of Utah's premier tailwater trout rivers.</li>
+          </ul>
+        </article>
+        <article class="reg-card">
+          <h3>Lower Provo — Below Deer Creek Dam</h3>
+          <div class="reg-tag reg-tag-ao">Artificial Only</div>
+          <ul>
+            <li>Artificial lures and flies only through key Provo Canyon reaches.</li>
+            <li>Slot and size limits for this section vary year to year — verify before fishing.</li>
+            <li>Special regulations extend through canyon sections near the reservoir outlet.</li>
+          </ul>
+        </article>
+        <article class="reg-card">
+          <h3>Upper Provo</h3>
+          <ul>
+            <li>Standard regulations apply to most upper reaches above Jordanelle Reservoir.</li>
+            <li>Some tributaries have spring closures to protect spawning fish.</li>
+            <li>Confirm whether specific pools carry artificial-only requirements in the current year.</li>
+          </ul>
+        </article>
+        <article class="reg-card">
+          <h3>Bag &amp; Size Limits</h3>
+          <ul>
+            <li>Catch and release sections: no bag limit — all fish must be released unharmed.</li>
+            <li>Standard Utah trout limit is 4 fish per day where general regulations apply.</li>
+            <li>Check for current slot size limits on Brown Trout on applicable sections.</li>
+          </ul>
+        </article>
+        <article class="reg-card">
+          <h3>Seasonal Notes</h3>
+          <ul>
+            <li>The Provo River is open year-round on most designated special-regulation sections.</li>
+            <li>Deer Creek and Jordanelle Reservoirs follow separate reservoir-specific rules.</li>
+            <li>High-elevation tributaries may have spring closures — always check headwater rules before fishing.</li>
+          </ul>
+        </article>
       </div>
     </section>
   </section>

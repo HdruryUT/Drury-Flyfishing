@@ -156,6 +156,81 @@ const customFlies = [
   { name: "Sculpin Streamer", why: "Bigger profile streamer for aggressive trout in deeper slots." }
 ];
 
+// Hatch calendar data
+const MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const hatchData = [
+  {
+    name: "Midges",
+    latin: "Chironomidae",
+    description: "Year-round staple of the Provo tailwater. Most critical in winter when other insects are dormant. Fish near bottom in slow seams during the coldest months; look for surface clustering during brief afternoon windows.",
+    sizes: "#18-26",
+    timing: "All day in winter; mid-morning through early afternoon in shoulder seasons",
+    flies: ["Zebra Midge", "Thread Midge #22-24", "WD-40 #20-22", "Midge Larva #20-22"],
+    activity: [3, 3, 2, 1, 0, 0, 0, 0, 0, 1, 2, 3]
+  },
+  {
+    name: "Blue-Winged Olive",
+    latin: "Baetis spp.",
+    description: "The signature Provo River hatch. These small mayflies thrive in cool, overcast conditions. Peak action runs March through April and again in October. Fish dries during heavy emergence; lead with nymphs in the hour before.",
+    sizes: "#16-22",
+    timing: "Mid-morning to early afternoon, peaking on overcast days",
+    flies: ["BWO #18-20", "BWO Comparadun #18-20", "RS2 #20", "Juju Baetis #18-20", "Soft Hackle Baetis #18"],
+    activity: [0, 1, 3, 3, 2, 0, 0, 0, 1, 3, 2, 0]
+  },
+  {
+    name: "Pale Morning Dun",
+    latin: "Ephemerella spp.",
+    description: "Prime summer hatch window for dry fly fishing. PMDs produce reliable mid-morning rises in May and June on the middle Provo. Look for evening spinner falls in calmer flat water for a second opportunity.",
+    sizes: "#16-18",
+    timing: "Mid-morning 9am–noon; evening spinner falls",
+    flies: ["PMD Sparkle Dun #16-18", "RS2 #20"],
+    activity: [0, 0, 0, 1, 3, 3, 2, 0, 0, 0, 0, 0]
+  },
+  {
+    name: "Caddis",
+    latin: "Trichoptera",
+    description: "Summer and fall staple producing spectacular evening hatches. Fish the skating caddis method during heavy activity when trout are slashing at the surface. Soft hackle wets on the swing also work well.",
+    sizes: "#14-18",
+    timing: "Afternoon through sunset; peaks just before dark",
+    flies: ["Elk Hair Caddis #16", "Tan Caddis #14-16", "Soft Hackle PT #16"],
+    activity: [0, 0, 0, 0, 1, 3, 3, 2, 1, 0, 0, 0]
+  },
+  {
+    name: "Trico",
+    latin: "Tricorythodes spp.",
+    description: "July and August early-morning spinner fall. Fish small dark dries as trout key on spent spinners in flat water. The hatch is typically finished by 9am — early arrival is essential.",
+    sizes: "#18-24",
+    timing: "Early morning only, 6–9am",
+    flies: ["Dark thread dry fly #20-22"],
+    activity: [0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 0, 0]
+  },
+  {
+    name: "Stonefly",
+    latin: "Plecoptera",
+    description: "Early season opportunity on the upper Provo. Larger golden and brown stones trigger big nymph and streamer action in March and April during pre-runoff flows. Pat's Rubber Legs is the proven imitation.",
+    sizes: "#8-14",
+    timing: "Morning and afternoon in early spring",
+    flies: ["Pat's Rubber Legs"],
+    activity: [0, 0, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0]
+  },
+  {
+    name: "Terrestrials",
+    latin: "Hoppers, Ants, Beetles",
+    description: "Summer through early fall bank-huggers. Drift hoppers tight to grassy banks; ants and beetles in calmer pockets behind structure. Best on warm afternoons with a light breeze pushing insects onto the water.",
+    sizes: "#10-16",
+    timing: "Warm afternoons, mid-July through September",
+    flies: ["Ant Pattern #16", "Dave's Hopper", "Foam Beetle"],
+    activity: [0, 0, 0, 0, 0, 1, 3, 3, 2, 0, 0, 0]
+  }
+];
+
+// USGS gauge stations for live stream conditions
+const usgsStations = [
+  { id: "10154200", name: "Upper Provo", note: "Near Woodland, UT" },
+  { id: "10155200", name: "Lower Provo", note: "Below Deer Creek Dam" }
+];
+
 const sectionSelect = document.getElementById("sectionSelect");
 const seasonSelect = document.getElementById("seasonSelect");
 const timeSelect = document.getElementById("timeSelect");
@@ -174,6 +249,15 @@ const flyIndexList = document.getElementById("flyIndexList");
 const flyIndexMeta = document.getElementById("flyIndexMeta");
 const riverDetailCards = document.getElementById("riverDetailCards");
 const provoRiverMapImage = document.getElementById("provoRiverMapImage");
+const hatchCalendarTab = document.getElementById("hatchCalendarTab");
+const conditionsTab = document.getElementById("conditionsTab");
+const regulationsTab = document.getElementById("regulationsTab");
+const hatchCalendarView = document.getElementById("hatchCalendarView");
+const conditionsView = document.getElementById("conditionsView");
+const regulationsView = document.getElementById("regulationsView");
+const refreshConditionsButton = document.getElementById("refreshConditionsButton");
+const conditionsStatus = document.getElementById("conditionsStatus");
+const conditionsCards = document.getElementById("conditionsCards");
 
 const riverSectionDetails = {
   upper: {
@@ -197,6 +281,170 @@ const riverSectionDetails = {
 };
 
 let riverMapRendered = false;
+
+function flowDescription(cfs) {
+  if (cfs < 30) return { label: "Very Low", note: "Technical wading; delicate, precise drifts needed.", color: "flow-low" };
+  if (cfs < 100) return { label: "Low–Moderate", note: "Good wade access and prime dry fly conditions.", color: "flow-good" };
+  if (cfs < 250) return { label: "Optimal", note: "Ideal range for nymph and dry-dropper rigs.", color: "flow-optimal" };
+  if (cfs < 500) return { label: "Moderate–High", note: "Use heavier nymphs; wade carefully in faster seams.", color: "flow-moderate" };
+  return { label: "High", note: "Streamers and heavy rigs; approach all wading with caution.", color: "flow-high" };
+}
+
+function tempDescription(tempC) {
+  const tempF = ((tempC * 9) / 5 + 32).toFixed(0);
+  let note;
+  if (tempC < 4.4) note = "Cold water: fish lethargic; midges and slow, deep nymph drifts work best.";
+  else if (tempC < 12.8) note = "Cool water: active fish; BWO and nymph prime range.";
+  else if (tempC < 18.3) note = "Optimal temp: full hatch activity and best dry fly conditions.";
+  else note = "Warm water: fish stressed; focus on early mornings and shaded runs.";
+  return { tempF, tempC: tempC.toFixed(1), note };
+}
+
+let hatchCalendarRendered = false;
+
+function renderHatchCalendar() {
+  if (hatchCalendarRendered) return;
+  const grid = document.getElementById("hatchCalendarGrid");
+  if (!grid) return;
+
+  const currentMonth = new Date().getMonth();
+
+  let html = '<div class="hatch-table-wrap"><table class="hatch-table"><thead><tr><th>Insect</th>';
+  MONTHS_SHORT.forEach((m, i) => {
+    html += `<th class="${i === currentMonth ? "hatch-current-month" : ""}">${m}</th>`;
+  });
+  html += "</tr></thead><tbody>";
+
+  hatchData.forEach((insect, rowIndex) => {
+    html += `<tr class="hatch-row${rowIndex === 0 ? " hatch-selected" : ""}" data-hatch="${rowIndex}">`;
+    html += `<td class="hatch-insect-name">${insect.name}</td>`;
+    insect.activity.forEach((level, monthIndex) => {
+      html += `<td class="hatch-cell${monthIndex === currentMonth ? " hatch-current-month" : ""}">`;
+      if (level > 0) html += `<span class="hatch-dot hatch-dot-${level}"></span>`;
+      html += "</td>";
+    });
+    html += "</tr>";
+  });
+
+  html += `</tbody></table></div>
+    <div class="hatch-legend">
+      <span class="legend-label">Activity:</span>
+      <span class="legend-item"><span class="hatch-dot hatch-dot-1"></span>Low</span>
+      <span class="legend-item"><span class="hatch-dot hatch-dot-2"></span>Moderate</span>
+      <span class="legend-item"><span class="hatch-dot hatch-dot-3"></span>Peak</span>
+    </div>`;
+
+  grid.innerHTML = html;
+
+  document.querySelectorAll(".hatch-row").forEach((row) => {
+    row.addEventListener("click", () => {
+      document.querySelectorAll(".hatch-row").forEach(r => r.classList.remove("hatch-selected"));
+      row.classList.add("hatch-selected");
+      renderHatchDetails(Number(row.dataset.hatch));
+    });
+  });
+
+  hatchCalendarRendered = true;
+  renderHatchDetails(0);
+}
+
+function renderHatchDetails(index) {
+  const insect = hatchData[index];
+  const details = document.getElementById("hatchDetails");
+  if (!details) return;
+
+  const fliesHtml = insect.flies.length
+    ? insect.flies.map(f => `<span class="hatch-fly-pill">${f}</span>`).join("")
+    : '<span class="hatch-fly-pill">Match current local hatch</span>';
+
+  details.innerHTML = `
+    <div class="hatch-detail-card">
+      <h3>${insect.name} <span class="hatch-latin">(${insect.latin})</span></h3>
+      <p>${insect.description}</p>
+      <div class="hatch-detail-row">
+        <div>
+          <p class="hatch-detail-label">Hook Sizes</p>
+          <p>${insect.sizes}</p>
+        </div>
+        <div>
+          <p class="hatch-detail-label">Best Timing</p>
+          <p>${insect.timing}</p>
+        </div>
+      </div>
+      <p class="hatch-detail-label">Top Fly Patterns</p>
+      <div class="hatch-fly-pills">${fliesHtml}</div>
+    </div>
+  `;
+}
+
+let conditionsLoaded = false;
+
+async function fetchUSGSData() {
+  const sites = usgsStations.map(s => s.id).join(",");
+  const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${sites}&parameterCd=00060,00010&siteStatus=all`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("USGS fetch failed");
+  return response.json();
+}
+
+function parseUSGSData(data) {
+  const results = {};
+  (data?.value?.timeSeries || []).forEach((series) => {
+    const siteNo = series?.sourceInfo?.siteCode?.[0]?.value;
+    const paramCode = series?.variable?.variableCode?.[0]?.value;
+    const rawValue = series?.values?.[0]?.value?.[0]?.value;
+    if (!siteNo || rawValue === undefined || rawValue === null) return;
+    const numValue = parseFloat(rawValue);
+    if (isNaN(numValue) || numValue < -9000) return;
+    if (!results[siteNo]) results[siteNo] = { siteNo };
+    if (paramCode === "00060") results[siteNo].flow = numValue;
+    if (paramCode === "00010") results[siteNo].tempC = numValue;
+  });
+  return results;
+}
+
+function renderConditionsData(parsed) {
+  if (!conditionsCards) return;
+  conditionsCards.innerHTML = usgsStations.map((station) => {
+    const data = parsed[station.id];
+    if (!data) {
+      return `<article class="conditions-card"><h3>${station.name}</h3><p>No data available.</p></article>`;
+    }
+    const flowDesc = data.flow !== undefined ? flowDescription(data.flow) : null;
+    const tempDesc = data.tempC !== undefined ? tempDescription(data.tempC) : null;
+    return `
+      <article class="conditions-card">
+        <h3>${station.name}</h3>
+        <p class="conditions-gauge">USGS ${station.id} — ${station.note}</p>
+        ${flowDesc ? `
+          <p><strong>Flow:</strong> ${data.flow.toFixed(0)} cfs &mdash; <span class="flow-badge ${flowDesc.color}">${flowDesc.label}</span></p>
+          <p class="conditions-note">${flowDesc.note}</p>
+        ` : ""}
+        ${tempDesc ? `
+          <p><strong>Water Temp:</strong> ${tempDesc.tempF}&deg;F (${tempDesc.tempC}&deg;C)</p>
+          <p class="conditions-note">${tempDesc.note}</p>
+        ` : ""}
+      </article>
+    `;
+  }).join("");
+}
+
+async function loadConditions() {
+  if (conditionsStatus) conditionsStatus.textContent = "Fetching USGS stream data...";
+  try {
+    const raw = await fetchUSGSData();
+    const parsed = parseUSGSData(raw);
+    renderConditionsData(parsed);
+    if (conditionsStatus) {
+      conditionsStatus.textContent = `Last updated: ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+    }
+    conditionsLoaded = true;
+  } catch (error) {
+    if (conditionsStatus) conditionsStatus.textContent = "Could not load USGS data. Try refreshing.";
+    if (conditionsCards) conditionsCards.innerHTML = "";
+    console.error(error);
+  }
+}
 
 function sectionMapUrl(latitude, longitude) {
   return `https://www.google.com/maps?q=${latitude},${longitude}`;
@@ -375,17 +623,28 @@ function setView(viewName) {
   const showPlanner = viewName === "planner";
   const showFlyIndex = viewName === "fly-index";
   const showRiverMap = viewName === "river-map";
+  const showHatchCalendar = viewName === "hatch-calendar";
+  const showConditions = viewName === "conditions";
+  const showRegulations = viewName === "regulations";
 
   plannerView.classList.toggle("view-hidden", !showPlanner);
   flyIndexView.classList.toggle("view-hidden", !showFlyIndex);
   riverMapView.classList.toggle("view-hidden", !showRiverMap);
+  hatchCalendarView.classList.toggle("view-hidden", !showHatchCalendar);
+  conditionsView.classList.toggle("view-hidden", !showConditions);
+  regulationsView.classList.toggle("view-hidden", !showRegulations);
 
   plannerTab.classList.toggle("is-active", showPlanner);
   flyIndexTab.classList.toggle("is-active", showFlyIndex);
   riverMapTab.classList.toggle("is-active", showRiverMap);
+  hatchCalendarTab.classList.toggle("is-active", showHatchCalendar);
+  conditionsTab.classList.toggle("is-active", showConditions);
+  regulationsTab.classList.toggle("is-active", showRegulations);
 
   if (showFlyIndex) renderFlyIndex();
   if (showRiverMap) renderRiverMap();
+  if (showHatchCalendar) renderHatchCalendar();
+  if (showConditions && !conditionsLoaded) loadConditions();
 }
 
 function setTheme() {
@@ -485,6 +744,13 @@ refreshWeatherButton.addEventListener("click", loadWeather);
 plannerTab.addEventListener("click", () => setView("planner"));
 flyIndexTab.addEventListener("click", () => setView("fly-index"));
 riverMapTab.addEventListener("click", () => setView("river-map"));
+hatchCalendarTab.addEventListener("click", () => setView("hatch-calendar"));
+conditionsTab.addEventListener("click", () => setView("conditions"));
+regulationsTab.addEventListener("click", () => setView("regulations"));
+refreshConditionsButton.addEventListener("click", () => {
+  conditionsLoaded = false;
+  loadConditions();
+});
 
 renderFlies();
 loadWeather();
